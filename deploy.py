@@ -1,9 +1,9 @@
-# deploy.py - A memory-friendly version for Streamlit Cloud
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import base64
+from pathlib import Path # Import the Path library
 
 # --- Page Configuration ---
 st.set_page_config(
@@ -20,29 +20,40 @@ def get_img_as_base64(file):
             data = f.read()
         return base64.b64encode(data).decode()
     except FileNotFoundError:
-        st.error(f"Background image '{file}' not found. Check if it's in your GitHub repo.")
+        st.error(f"Background image not found at path: {file}")
         return None
 
+# --- THIS IS THE ROBUST FILE PATH LOGIC ---
+# Get the directory of the current script
+script_dir = Path(__file__).parent
+# Join the script directory with the image filename
+img_path = script_dir / "background2.jpg"
+
 # --- Custom CSS ---
-img = get_img_as_base64("background2.jpg")
+img = get_img_as_base64(img_path) # Use the full path to load the image
 if img:
     page_bg_img = f"""
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
         [data-testid="stAppViewContainer"] > .main {{
             background-image: url("data:image/jpeg;base64,{img}");
-            background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: local;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: local;
         }}
         h1, h2, h3, p, label {{ color: #FFFFFF !important; }}
         h1 {{ font-family: 'Playfair Display', serif !important; font-size: 3rem !important; }}
         .stButton > button {{
-            border: 2px solid #FFFFFF; border-radius:10px; background-color: #FFFFFF; color: #000000 !important;
-            transition: all 0.2s ease-in-out; font-weight: bold;
+            border: 2px solid #FFFFFF; border-radius:10px; background-color: #FFFFFF;
+            color: #000000 !important; transition: all 0.2s ease-in-out; font-weight: bold;
         }}
         .stButton > button * {{ color: #000000 !important; }}
         .stButton > button:hover {{ background-color: transparent; color: #FFFFFF !important; border-color: #FFFFFF; }}
         .stButton > button:hover * {{ color: #FFFFFF !important; }}
-        [data-testid="stSelectbox"] > div[data-baseweb="select"] > div {{ background-color: #FFFFFF; border: 2px solid #000000; border-radius: 10px; color: #000000; }}
+        [data-testid="stSelectbox"] > div[data-baseweb="select"] > div {{
+            background-color: #FFFFFF; border: 2px solid #000000; border-radius: 10px; color: #000000;
+        }}
         [data-testid="stSelectbox"] div[data-baseweb="select"] > div > div {{ color: #000000 !important; }}
         [data-testid="stSelectbox"] svg {{ fill: #000000 !important; }}
         [data-baseweb="popover"] ul {{ background-color: #FFFFFF; border-radius: 10px; }}
@@ -83,7 +94,7 @@ if st.session_state.page == 'Home':
         <h2 style="color:white;">"Style speaks louder when data listens"</h2>
         <p style="color:white;">From delight to disappointment, this dashboard unravels what customers feel and why. Let the numbers speak the language of fashion.</p>
         <br>
-        <p style="color:white;"><i>Note: This live demo showcases the interactive dashboard and visualization features. The full version with the AI-powered recommendation engine is available in the <a href="https://github.com/Sakshi3027/runway-reactions-dashboard" style="color: #A7C7E7;">GitHub repository</a>.</i></p>
+        <p style="color:white;"><i>Note: This live demo showcases the interactive dashboard and visualization features. The full version with all AI features is available in the <a href="https://github.com/Sakshi3027/runway-reactions-dashboard" style="color: #A7C7E7;">GitHub repository</a>.</i></p>
     </div>
     """, unsafe_allow_html=True)
 
