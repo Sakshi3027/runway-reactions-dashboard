@@ -1,9 +1,8 @@
---extra-index-url https://download.pytorch.org/whl/cpu
-streamlit
-pandas
-matplotlib
-seaborn
-scikit-learn
-nltk
-transformers
-torch
+streamlit==1.35.0
+pandas==2.1.4
+matplotlib==3.8.2
+seaborn==0.13.1
+scikit-learn==1.3.2
+nltk==3.8.1
+transformers==4.36.2
+torch==2.1.2
