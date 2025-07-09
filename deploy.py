@@ -2,8 +2,6 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-import base64
-from pathlib import Path # Import the Path library
 
 # --- Page Configuration ---
 st.set_page_config(
@@ -12,57 +10,68 @@ st.set_page_config(
     page_icon="✨"
 )
 
-# --- Function to load and encode the background image ---
-@st.cache_data
-def get_img_as_base64(file):
-    try:
-        with open(file, "rb") as f:
-            data = f.read()
-        return base64.b64encode(data).decode()
-    except FileNotFoundError:
-        st.error(f"Background image not found at path: {file}")
-        return None
-
-# --- THIS IS THE ROBUST FILE PATH LOGIC ---
-# Get the directory of the current script
-script_dir = Path(__file__).parent
-# Join the script directory with the image filename
-img_path = script_dir / "background2.jpg"
-
 # --- Custom CSS ---
-img = get_img_as_base64(img_path) # Use the full path to load the image
-if img:
-    page_bg_img = f"""
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
-        [data-testid="stAppViewContainer"] > .main {{
-            background-image: url("data:image/jpeg;base64,{img}");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: local;
-        }}
-        h1, h2, h3, p, label {{ color: #FFFFFF !important; }}
-        h1 {{ font-family: 'Playfair Display', serif !important; font-size: 3rem !important; }}
-        .stButton > button {{
-            border: 2px solid #FFFFFF; border-radius:10px; background-color: #FFFFFF;
-            color: #000000 !important; transition: all 0.2s ease-in-out; font-weight: bold;
-        }}
-        .stButton > button * {{ color: #000000 !important; }}
-        .stButton > button:hover {{ background-color: transparent; color: #FFFFFF !important; border-color: #FFFFFF; }}
-        .stButton > button:hover * {{ color: #FFFFFF !important; }}
-        [data-testid="stSelectbox"] > div[data-baseweb="select"] > div {{
-            background-color: #FFFFFF; border: 2px solid #000000; border-radius: 10px; color: #000000;
-        }}
-        [data-testid="stSelectbox"] div[data-baseweb="select"] > div > div {{ color: #000000 !important; }}
-        [data-testid="stSelectbox"] svg {{ fill: #000000 !important; }}
-        [data-baseweb="popover"] ul {{ background-color: #FFFFFF; border-radius: 10px; }}
-        [data-baseweb="popover"] ul li:hover {{ background-color: #e0e0e0 !important; }}
-        [data-baseweb="popover"] ul li > div {{ color: #000000 !important; }}
-        .st-emotion-cache-16txtl3 {{ display: none; }}
-    </style>
-    """
-    st.markdown(page_bg_img, unsafe_allow_html=True)
+# This CSS now uses a direct URL for the background image.
+page_bg_img = f"""
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+
+    /* Main app background */
+    [data-testid="stAppViewContainer"] > .main {{
+        background-image: url("https://www.toptal.com/designers/subtlepatterns/uploads/dark-denim-3.png");
+        background-size: cover;
+        background-position: center;
+        background-repeat: repeat;
+        background-attachment: local;
+    }}
+    
+    /* Make headers and text readable */
+    h1, h2, h3, p, label {{
+        color: #FFFFFF !important; 
+    }}
+    
+    /* Custom Font for the Main Title */
+    h1 {{
+        font-family: 'Playfair Display', serif !important;
+        font-size: 3rem !important;
+    }}
+
+    /* Final Button Styles */
+    .stButton > button {{
+        border: 2px solid #FFFFFF; border-radius:10px; background-color: #FFFFFF;
+        color: #000000 !important; transition: all 0.2s ease-in-out; font-weight: bold;
+    }}
+    .stButton > button * {{ color: #000000 !important; }}
+    .stButton > button:hover {{ background-color: transparent; color: #FFFFFF !important; border-color: #FFFFFF; }}
+    .stButton > button:hover * {{ color: #FFFFFF !important; }}
+    
+    /* Style for the dropdown select box */
+    [data-testid="stSelectbox"] > div[data-baseweb="select"] > div {{
+        background-color: #FFFFFF; border: 2px solid #000000; border-radius: 10px; color: #000000;
+    }}
+    [data-testid="stSelectbox"] div[data-baseweb="select"] > div > div {{ color: #000000 !important; }}
+    [data-testid="stSelectbox"] svg {{ fill: #000000 !important; }}
+    [data-baseweb="popover"] ul {{ background-color: #FFFFFF; border-radius: 10px; }}
+    [data-baseweb="popover"] ul li:hover {{ background-color: #e0e0e0 !important; }}
+    [data-baseweb="popover"] ul li > div {{ color: #000000 !important; }}
+
+    /* Recommendation card style */
+    .recommendation-card {{
+        background-color: rgba(0, 0, 0, 0.5); 
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 20px;
+        border-radius: 15px;
+        margin-bottom: 15px;
+    }}
+    /* Hide the default Streamlit sidebar */
+    .st-emotion-cache-16txtl3 {{
+        display: none;
+    }}
+</style>
+"""
+st.markdown(page_bg_img, unsafe_allow_html=True)
+
 
 # --- Data Loading ---
 @st.cache_data
@@ -72,7 +81,8 @@ def load_data():
 
 df = load_data()
 
-# --- App Title and Navigation ---
+
+# --- App Title and Custom Navigation ---
 st.markdown("<h1 style='text-align: center;'>RUNWAY REACTIONS - by SAKSH</h1>", unsafe_allow_html=True)
 
 if 'page' not in st.session_state:
@@ -86,6 +96,7 @@ with nav_col2:
     if st.button('🚀 Explore Insights', use_container_width=True):
         st.session_state.page = 'Explore Insights'
 st.markdown("---")
+
 
 # --- Page Content ---
 if st.session_state.page == 'Home':
