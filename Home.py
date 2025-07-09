@@ -25,7 +25,7 @@ def get_img_as_base64(file):
         return None
 
 # --- Custom CSS ---
-img = get_img_as_base64("background2.jpg")
+img = get_img_as_base64("/Users/saksh/Documents/fashion brand analyst/background2.jpg")
 
 if img:
     page_bg_img = f"""
