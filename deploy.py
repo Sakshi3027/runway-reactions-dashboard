@@ -18,7 +18,7 @@ page_bg_img = f"""
 
     /* Main app background */
     [data-testid="stAppViewContainer"] > .main {{
-    https://raw.githubusercontent.com/Sakshi3027/runway-reactions-dashboard/main/background2.jpg
+    background-image: url("./background2.jpg");
         background-image: url("https://www.toptal.com/designers/subtlepatterns/uploads/dark-denim-3.png");
         background-size: cover;
         background-position: center;
