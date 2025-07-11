@@ -2,12 +2,21 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import base64
 
-# --- Page Configuration ---
+# Function to encode image to base64
+def get_base64_image(image_path):
+    with open(image_path, "rb") as img_file:
+        return base64.b64encode(img_file.read()).decode()
+
+# Get base64 string of your local image
+base64_image = get_base64_image("background2.jpg")
+
+# ---- Page Configuration ----
 st.set_page_config(
-    layout="wide", 
-    page_title="RUNWAY REACTIONS", 
-    page_icon="✨"
+    layout="wide",
+    page_title="RUNWAY REACTIONS",
+    page_icon="👗"
 )
 
 # --- Custom CSS ---
@@ -18,8 +27,7 @@ page_bg_img = f"""
 
     /* Main app background */
     [data-testid="stAppViewContainer"] > .main {{
-    background-image: url("./background2.jpg");
-        background-image: url("https://www.toptal.com/designers/subtlepatterns/uploads/dark-denim-3.png");
+        background-image: url("data:image/jpeg;base64,{base64_image}");
         background-size: cover;
         background-position: center;
         background-repeat: repeat;
