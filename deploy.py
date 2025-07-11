@@ -9,9 +9,17 @@ def get_base64_image(image_path):
     with open(image_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode()
 
-# Get base64 string of your local image
-base64_image = get_base64_image("background2.jpg")
-
+# Test if image exists
+import os
+st.write(f"Current directory: {os.getcwd()}")
+st.write(f"Files in directory: {os.listdir('.')}")
+st.write(f"background2.jpg exists: {os.path.exists('background2.jpg')}")
+# Test the image loading
+try:
+    base64_image = get_base64_image("background2.jpg")
+    st.write(f"Base64 image loaded successfully, length: {len(base64_image)}")
+except Exception as e:
+    st.write(f"Error loading image: {e}")
 # ---- Page Configuration ----
 st.set_page_config(
     layout="wide",
@@ -26,7 +34,7 @@ page_bg_img = f"""
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
 
     /* Main app background */
-    [data-testid="stAppViewContainer"] > .main {{
+    .stApp {{
         background-image: url("data:image/jpeg;base64,{base64_image}");
         background-size: cover;
         background-position: center;
